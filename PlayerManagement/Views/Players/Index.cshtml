@@ -1,0 +1,124 @@
+﻿@model IEnumerable<PlayerManagement.Models.Player>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @await Component.InvokeAsync("AggregateInfo")
+
+    @await Component.InvokeAsync("HeadCount", new { categoryId = 0 })
+</div>
+
+
+<p>
+    <button id="btnCreate" class="btn btn-info float-end mb-2">Create Player</button>
+</p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PlayerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MobileNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsOverseas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CitizenshipId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SigningFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SigningDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlayerSkills)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="player-list-body">
+@foreach (var item in Model) {
+        <tr data-player-id="@item.PlayerId">
+            <td>
+                @Html.DisplayFor(modelItem => item.PlayerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MobileNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsOverseas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Citizenships.CountryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SigningFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SigningDate)
+            </td>
+            <td>
+                <img src="~/images/@item.ImageUrl" width="60" />
+            </td>
+                <td>
+                    <ul>
+                        @foreach (var m in item.PlayerSkills)
+                        {
+                            <li> @m.SkillName - @m.SkillLevel</li>
+                        }
+                    </ul>
+                </td>
+            <td>
+                <a class="btn btn-sm btn-success btnEdit" href="@Url.Action("EditPlayer","Players", new{ id = @item.PlayerId})">Edit</a>
+                    <a class="btn btn-sm btn-danger" href="@Url.Action("DeletePlayer","Players", new{ id = @item.PlayerId})" onclick="return confirm('Are you sure want to delete @item.PlayerName?')">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div id="modalContainer">
+    
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function()
+        {
+            $('#btnCreate').click(function()
+            {
+                $.get('@Url.Action("CreatePlayer","Players")', function(data){
+                    $('#modalContainer').html('<div class="modal fade show" role="dialog" style="display:block" aria-modal="true"><div class="modal-dialog modal-lg"><div class="modal-content">'+ data +'</div></div></div><div class="modal-backdrop fade show"></div>');
+                    attachModalEventListener();
+                })
+            })
+            function attachModalEventListener(action="Create",PlayerId=null)
+            {
+                $(document).off('click',".modal-backdrop, .modal .btn-secondary").on('click',".modal-backdrop, .modal .btn-secondary", function(){
+                    $('#modalContainer').empty();
+                })
+            }
+            $(document).on('click',".btnEdit", function(e){
+                e.preventDefault();
+                var editUrl = $(this).attr('href')
+                $.get(editUrl,function(data){
+                    $('#modalContainer').html('<div class="modal fade show" role="dialog" style="display:block" aria-modal="true"><div class="modal-dialog modal-lg"><div class="modal-content">'+ data +'</div></div></div><div class="modal-backdrop fade show"></div>');
+                    attachModalEventListener("Edit",$(e.currentTarget).closest('tr').data("player-id"));
+                })
+            })
+        })
+    </script>
+}

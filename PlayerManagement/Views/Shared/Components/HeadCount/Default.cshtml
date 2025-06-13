@@ -1,0 +1,29 @@
+﻿@model IEnumerable<CountryHeadCount>
+
+<h4>Player Count by Country</h4>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Country Name</th>
+                <th>Player Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CountryName</td>
+                    <td>@item.Count</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No Country count data available.</p>
+}
+

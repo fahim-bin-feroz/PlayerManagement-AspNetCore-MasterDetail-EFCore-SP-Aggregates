@@ -1,0 +1,113 @@
+﻿@model PlayerViewModel
+<link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<div class="modal-header">
+    <h5 class="modal-title">Edit Player</h5>
+</div>
+<div class="modal-body">
+    <form asp-action="EditPlayer" asp-controller="Players" id="editForm" enctype="multipart/form-data">
+        <div class="row">
+            <input type="hidden" name="PlayerId" value="@Model.PlayerId" />
+            <input type="hidden" name="OldImageUrl" value="@Model.ImageUrl" />
+            <div class="col-md-7">
+                <h4>Player Information</h4>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="PlayerName" class="control-label"></label>
+                    <input asp-for="PlayerName" class="form-control" />
+                    <span asp-validation-for="PlayerName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MobileNo" class="control-label"></label>
+                    <input asp-for="MobileNo" class="form-control" />
+                    <span asp-validation-for="MobileNo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsOverseas" /> @Html.DisplayNameFor(model => model.IsOverseas)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CitizenshipId" class="control-label"></label>
+                    <select asp-for="CitizenshipId" class="form-control" asp-items="@(new SelectList(Model.Citizenships,"CitizenshipId","CountryName"))">
+                        <option value="">--Select Country--</option>
+                    </select>
+                    <span asp-validation-for="CitizenshipId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SigningFee" class="control-label"></label>
+                    <input asp-for="SigningFee" class="form-control" />
+                    <span asp-validation-for="SigningFee" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SigningDate" class="control-label"></label>
+                    <input asp-for="SigningDate" class="form-control" />
+                    <span asp-validation-for="SigningDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <img id="imgFile" src="~/images/@Model.ImageUrl" width="100" /><br />
+                    @Html.LabelFor(model => model.ProfileFile, htmlAttributes: new { @class = "control label col-md-3" })
+                    <input type="file" id="ProfileFile" name="ProfileFile" onchange="readUrl(this)" class="invisible" />
+                </div>
+            </div>
+            <div class="col-md-5">
+                <h4>Skill Information</h4>
+                <button onclick="AddSkill()" type="button" class="btn btn-warning mb-2">Add Skill</button>
+                @Html.Partial("_AddSkill", Model.PlayerSkills)
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary">Close</button>
+                <button type="submit" class="btn btn-success">Update Player</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="~/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    function readUrl(i)
+    {
+        if(i.files && i.files[0])
+        {
+            var reader = new FileReader();
+            reader.onload = function(e)
+            {
+                $('#imgFile').attr('src',e.target.result);
+            }
+            reader.readAsDataURL(i.files[0]);
+            updateSkillIndex();
+        }
+    }
+    function deleteRow(btn){
+        $(btn).closest('tr').remove();
+        updateSkillIndex();
+    }
+    function AddSkill(){
+        var lastIndex = parseInt($('#HIndex').val());
+        var newRow = `<tr>
+                <td>
+                    <input type="text" class="form-control" name="PlayerSkills[${lastIndex}].SkillName" value="" />
+                </td>
+                <td>
+                    <input type="text" class="form-control" name="PlayerSkills[${lastIndex}].SkillLevel" value="" />
+                </td>
+                <td><button onclick="deleteRow(this)" type="button" class="btn btn-danger">Remove</button></td></tr>`;
+                $('#ExTable tbody').append(newRow);
+                $('#HIndex').val(lastIndex + 1);
+                updateSkillIndex();
+    }
+    function  updateSkillIndex(){
+        $('#ExTable tbody tr').each(function(index)
+        {
+            $(this).find("input[name^=PlayerSkills]").each(function()
+            {
+                var name = $(this).attr("name");
+                name = name.replace(/PlayerSkills\[\d+\]/,"PlayerSkills["+ index +"]")
+                $(this).attr("name", name)
+            })
+        })
+    }
+</script>

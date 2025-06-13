@@ -1,0 +1,29 @@
+﻿@model List<PlayerSkill>
+<table id="ExTable" class="table table-bordered">
+	<thead>
+		<tr>
+			<th>Skill Name</th>
+			<th>Skill Level</th>
+		</tr>
+	</thead>
+	<tbody>
+		@for (int i = 0; i < Model.Count; i++)
+		{
+			<tr>
+				<td>
+					<input type="text" class="form-control" name="PlayerSkills[@i].SkillName" value="@Model[i].SkillName" />
+				</td>
+				<td>
+					<input type="text" class="form-control" name="PlayerSkills[@i].SkillLevel" value="@Model[i].SkillLevel" />
+				</td>
+				<td>
+					@if (i > 0)
+					{
+						<button onclick="deleteRow(this)" type="button" class="btn btn-danger">Remove</button>
+					}
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+<input type="hidden" id="HIndex" value="@Model.Count" />

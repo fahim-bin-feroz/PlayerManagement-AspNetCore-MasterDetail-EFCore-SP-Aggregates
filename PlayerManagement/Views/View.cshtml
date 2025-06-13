@@ -1,0 +1,70 @@
+﻿@model PlayerManagement.Models.Player
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>View</h1>
+
+<h4>Player</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="View">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PlayerId" class="control-label"></label>
+                <input asp-for="PlayerId" class="form-control" />
+                <span asp-validation-for="PlayerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlayerName" class="control-label"></label>
+                <input asp-for="PlayerName" class="form-control" />
+                <span asp-validation-for="PlayerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MobileNo" class="control-label"></label>
+                <input asp-for="MobileNo" class="form-control" />
+                <span asp-validation-for="MobileNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsOverseas" /> @Html.DisplayNameFor(model => model.IsOverseas)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="CitizenshipId" class="control-label"></label>
+                <input asp-for="CitizenshipId" class="form-control" />
+                <span asp-validation-for="CitizenshipId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SigningFee" class="control-label"></label>
+                <input asp-for="SigningFee" class="form-control" />
+                <span asp-validation-for="SigningFee" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SigningDate" class="control-label"></label>
+                <input asp-for="SigningDate" class="form-control" />
+                <span asp-validation-for="SigningDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageUrl" class="control-label"></label>
+                <input asp-for="ImageUrl" class="form-control" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
