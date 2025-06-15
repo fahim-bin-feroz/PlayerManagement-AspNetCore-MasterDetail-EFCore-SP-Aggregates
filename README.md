@@ -128,6 +128,7 @@ A modular, enterprise-grade ASP.NET Core MVC web application showcasing advanced
 
 ### STEP 1: Clone the repository
 git clone https://github.com/fahim-bin-feroz/PlayerManagement-AspNetCore-MasterDetail-EFCore-SP-Aggregates.git
+
 cd PlayerManagement-AspNetCore-MasterDetail-EFCore-SP-Aggregates
 
 ### STEP 2: Update the SQL connection string in appsettings.json
